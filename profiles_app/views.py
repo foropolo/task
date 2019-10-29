@@ -28,7 +28,7 @@ class HelloApiView(APIView):
 
         if serializer.is_valid():
             city_name = serializer.validated_data.get('city_name')
-            message = f'api.openweathermap.org/data/2.5/weather?q={city_name}'
+            message = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&Appid=458449704162ef73cbf18469dc290e17'
             return Response({'message':message})
         else:
             return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
