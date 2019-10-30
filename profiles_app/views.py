@@ -2,12 +2,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from profiles_app import serializers
-
-
+from profiles_app import jsongetter
+import urllib
+import json
 
 class HelloApiView(APIView):
     """Test API View"""
     serializer_class = serializers.HelloSerializer
+
 
     def get(self, request, format=None):
         """Returns a list of APIView features"""
@@ -24,11 +26,10 @@ class HelloApiView(APIView):
 
     def post(self, request):
         """Create a hello message with our name"""
-        serializer = self.serializer_class(data=request.data)
-
-        if serializer.is_valid():
-            city_name = serializer.validated_data.get('city_name')
-            message = f'http://api.openweathermap.org/data/2.5/weather?q={city_name}&Appid=458449704162ef73cbf18469dc290e17'
-            return Response({'message':message})
-        else:
-            return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
+        city_name = request.data.get('city_name')
+        #url = "http://api.openweathermap.org/data/2.5/weather?q=%s&Appid=458449704162ef73cbf18469dc290e17" % (city_name,)
+        url = '{}{}{}'.format('http://api.openweathermap.org/data/2.5/weather?q=',city_name,'&Appid=458449704162ef73cbf18469dc290e17')
+        print(url)
+        response = urllib.request.urlopen(url)
+        data = json.loads(response.read())
+        return Response(data)
