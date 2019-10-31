@@ -23,7 +23,7 @@ class TakeJsonData():
             url = '{}{}{}'.format('http://api.openweathermap.org/data/2.5/weather?q=',city_name,'&Appid=458449704162ef73cbf18469dc290e17')
             response = urllib.request.urlopen(url)
             dataforo = json.loads(response.read())
-            temperature = request.dataforo.get("main")
+            temperature = dataforo.get("main")
             return temperature
         else:
             return Response(serializer.errors,status = status.HTTP_400_BAD_REQUEST)
